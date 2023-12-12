@@ -7,8 +7,8 @@ topA go right and topB go left.
 
 ```mermaid
 flowchart
-    classDef dotA fill:#fff,stroke:#05f ,stroke-width:1.2px,font-family:'Times New Roman' ,font-size:20px , font-weight: bold;
-    classDef dotB fill:#fff ,stroke:#a0f ,stroke-width:1.2px , font-family:'Times New Roman' ,font-size:20px , font-weight: bold;
+    classDef dotA fill:#fff,stroke:#05f ,stroke-width:1.2px,font-family:Times New Roman ,font-size:20px , font-weight: bold;
+    classDef dotB fill:#fff ,stroke:#a0f ,stroke-width:1.2px , font-family:Times New Roman ,font-size:20px , font-weight: bold;
     classDef Title font-family:Times New Roman ,font-size:24px;
     subgraph Shared-Stack["Shared Stack"]
         direction LR
