@@ -1,1 +1,1 @@
-# 顺序表
+# A typical SeqList
