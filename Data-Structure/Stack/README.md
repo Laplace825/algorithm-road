@@ -1,0 +1,1 @@
+# A typical SeqStack
