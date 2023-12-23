@@ -1,10 +1,20 @@
 #include "KMP.h"
-#include <iostream>
+#include <format>
+#include <bits/stdc++.h>
+
+using fnPtr = std::vector<int> (* [3])(const std::string &); 
 
 int main(int argc, char** argv) {
-    std::string text = "ABABDABACDABABCABAB";
-    std::string pattern = "ABABCABAB";
-    int index = KMP(text, pattern); // 10
-    std::cout << "index: " << index << '\n';
-    return 0;
+    
+    using namespace std;
+    string text = "abcaabbabcabaacbacba";
+    fnPtr fnArr = {findPattern , getNext , getNextVal};
+    vector<int> patternArray;
+    for(auto fn: fnArr){
+        patternArray = fn(text);
+        for(auto elem : patternArray)
+            cout << elem << ' ';
+        patternArray.clear();
+        cout << '\n';
+    }
 }
