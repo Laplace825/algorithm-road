@@ -10,7 +10,6 @@ protected:
     std::stack<Elem> stk2;
 public:
     bool isEmpty() const;
-    bool isFull() const;
     void EnQueue(const Elem & e);
     Elem DeQueue();
 };
@@ -18,11 +17,6 @@ public:
 template <class Elem>
 bool SimulateQueue<Elem>::isEmpty() const{
     return stk1.empty() && stk2.empty();
-}
-
-template <class Elem>
-bool SimulateQueue<Elem>::isFull() const{
-    return !isEmpty();
 }
 
 
