@@ -24,10 +24,12 @@ namespace BT
         SqlBinaryTree(const SqlBinaryTree<T> &src); // 拷贝
         SqlBinaryTree(SqlBinaryTree<T> &&src);      // 移动构造
         SqlBinaryTree(const T arr[], int size);     // 数组
+        ~SqlBinaryTree() { delete[] data; length = 0;}
         // 均使用递归实现,index表示根节点在数组中的下标,默认为0
         void preOrder(int index = 0) const;
         void inOrder(int index = 0) const;
         void postOrder(int index = 0) const;
+        void levelOrder() const;
 
         T &operator[](int index) { return data[index]; }
         T &findNearParent(int ind_1st, int ind_2nd) const;
@@ -65,11 +67,10 @@ namespace BT
         if (index >= length)
             return;
         std::cout << data[index] << ' ';
-        int num = index + 1;
-        int left = 2 * num;
-        int right = 2 * num + 1;
-        preOrder(left - 1);
-        preOrder(right - 1);
+        int left = 2 * index + 1;
+        int right = 2 * index + 2;
+        preOrder(left);
+        preOrder(right);
     }
 
     template <typename T>
@@ -77,12 +78,11 @@ namespace BT
     {
         if (index >= length)
             return;
-        int num = index + 1;
-        int left = 2 * num;
-        int right = 2 * num + 1;
-        inOrder(left - 1);
+        int left = 2 * index + 1;
+        int right = 2 * index + 2;
+        inOrder(left);
         std::cout << data[index] << ' ';
-        inOrder(right - 1);
+        inOrder(right);
     }
 
     template <typename T>
@@ -90,12 +90,18 @@ namespace BT
     {
         if (index >= length)
             return;
-        int num = index + 1;
-        int left = 2 * num;
-        int right = 2 * num + 1;
-        postOrder(left - 1);
-        postOrder(right - 1);
+        int left = 2 * index + 1;
+        int right = 2 * index + 2;
+        postOrder(left);
+        postOrder(right);
         std::cout << data[index] << ' ';
+    }
+
+    template <typename T>
+    void SqlBinaryTree<T>::levelOrder() const
+    {
+        for (int i = 0; i < length; ++i)
+            std::cout << data[i] << ' ';
     }
 
     template <typename T>
@@ -141,6 +147,9 @@ namespace BT
             break;
         case POST:
             sqlBt.postOrder(0);
+            break;
+        case LEVEL:
+            sqlBt.levelOrder();
             break;
         default:
             std::cout << "Error print::TYPE\n";
