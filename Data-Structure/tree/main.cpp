@@ -4,32 +4,42 @@
 
 int main()
 {
-    char pre[] = {'A', 'B', 'D', 'E', 'G', 'H', 'C', 'F', 'I'}; // 先序序列
-    char in[] = {'D', 'B', 'G', 'E', 'H', 'A', 'C', 'F', 'I'};  // 中序序列
+    char pre[] = {'A', 'B', 'D', 'H', 'I', 'E', 'J', 'K', 'C', 'F'}; // 先序序列
+    char in[] = {'H', 'D', 'I', 'B', 'J', 'K', 'E', 'A', 'C', 'F'};  // 中序序列
     /*
             A
-        ____||___
+        __//___
         B       C
-     ___||___   ||_
+     _//___     //_
      D     E      F
-          _||_   ||_
-         G   H     I
+  _//_  _//_
+  H  I  J
+       //_
+         K
     */
-    BT::LinkBinaryTree<char> LinkBtr{std::move(BT::create(pre, in, 9))};
+    BT::LinkBinaryTree<char> LinkBtr{std::move(BT::create(pre, in, 10))};
     BT::printTree(LinkBtr, BT::PRE);
     BT::printTree(LinkBtr, BT::IN);
     BT::printTree(LinkBtr, BT::POST);
+    BT::printTree(LinkBtr, BT::LEVEL);
+    std::cout << "preOrder with no recursion: ";
+    LinkBtr.preOrder();
+    std::cout << "inOrder with no recursion: ";
+    LinkBtr.inOrder();
+    std::cout << "depth: " << LinkBtr.depth() << '\n';
+    std::cout << "maxWideth: " << LinkBtr.maxWidth() << '\n';
     char arr[] = {'A', 'B', 'C', 'D', 'E', 'F'};
     /*
             A
-        ____||___
-        B       C
-     ___||___   _||
+        ___//____
+        B        C
+     __//___   _//
      D     E   F
     */
     BT::SqlBinaryTree<char> sqlBtr{arr, 6};
     BT::printTree(sqlBtr, BT::PRE);
     BT::printTree(sqlBtr, BT::IN);
     BT::printTree(sqlBtr, BT::POST);
-    std::cout << sqlBtr.findNearParent(1, 4) << '\n';
+    BT::printTree(sqlBtr, BT::LEVEL);
+    std::cout << "findNearParent:" << sqlBtr.findNearParent(1, 4) << '\n';
 }
