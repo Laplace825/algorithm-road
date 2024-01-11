@@ -9,11 +9,11 @@ namespace BT
     class SqlBinaryTree;
     // 声明打印函数
     template <typename T>
-    void printTree(SqlBinaryTree<T> &sqlBt, print printType);
+    void printTree(SqlBinaryTree<T> &sqlBt, print printType = PRE, unsigned int index = 0);
     template <typename T>
     class SqlBinaryTree
     {
-        friend void printTree<T>(SqlBinaryTree<T> &sqlBt, print printType);
+        friend void printTree<T>(SqlBinaryTree<T> &sqlBt, print printType, unsigned int index);
 
     protected:
         T *data;
@@ -24,12 +24,16 @@ namespace BT
         SqlBinaryTree(const SqlBinaryTree<T> &src); // 拷贝
         SqlBinaryTree(SqlBinaryTree<T> &&src);      // 移动构造
         SqlBinaryTree(const T arr[], int size);     // 数组
-        ~SqlBinaryTree() { delete[] data; length = 0;}
+        ~SqlBinaryTree()
+        {
+            delete[] data;
+            length = 0;
+        }
         // 均使用递归实现,index表示根节点在数组中的下标,默认为0
-        void preOrder(int index = 0) const;
-        void inOrder(int index = 0) const;
-        void postOrder(int index = 0) const;
-        void levelOrder() const;
+        void preOrder(unsigned int index = 0) const;
+        void inOrder(unsigned int index = 0) const;
+        void postOrder(unsigned int index = 0) const;
+        void levelOrder(unsigned int index = 0) const;
 
         T &operator[](int index) { return data[index]; }
         T &findNearParent(int ind_1st, int ind_2nd) const;
@@ -62,7 +66,7 @@ namespace BT
     }
 
     template <typename T>
-    void SqlBinaryTree<T>::preOrder(int index) const
+    void SqlBinaryTree<T>::preOrder(unsigned int index) const
     {
         if (index >= length)
             return;
@@ -74,7 +78,7 @@ namespace BT
     }
 
     template <typename T>
-    void SqlBinaryTree<T>::inOrder(int index) const
+    void SqlBinaryTree<T>::inOrder(unsigned int index) const
     {
         if (index >= length)
             return;
@@ -86,7 +90,7 @@ namespace BT
     }
 
     template <typename T>
-    void SqlBinaryTree<T>::postOrder(int index) const
+    void SqlBinaryTree<T>::postOrder(unsigned int index) const
     {
         if (index >= length)
             return;
@@ -98,9 +102,9 @@ namespace BT
     }
 
     template <typename T>
-    void SqlBinaryTree<T>::levelOrder() const
+    void SqlBinaryTree<T>::levelOrder(unsigned int index) const
     {
-        for (int i = 0; i < length; ++i)
+        for (int i = index; i < length; ++i)
             std::cout << data[i] << ' ';
     }
 
@@ -135,21 +139,21 @@ namespace BT
     }
 
     template <typename T>
-    void printTree(SqlBinaryTree<T> &sqlBt, print printType)
+    void printTree(SqlBinaryTree<T> &sqlBt, print printType, unsigned int index)
     {
         switch (printType)
         {
         case PRE:
-            sqlBt.preOrder(0);
+            sqlBt.preOrder(index);
             break;
         case IN:
-            sqlBt.inOrder(0);
+            sqlBt.inOrder(index);
             break;
         case POST:
-            sqlBt.postOrder(0);
+            sqlBt.postOrder(index);
             break;
         case LEVEL:
-            sqlBt.levelOrder();
+            sqlBt.levelOrder(index);
             break;
         default:
             std::cout << "Error print::TYPE\n";
