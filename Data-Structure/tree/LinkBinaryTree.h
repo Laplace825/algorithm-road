@@ -22,7 +22,8 @@ namespace BT
     LinkBinaryTree<Elem> create(const Elem pre[], const Elem in[], int size);
     template <class Elem>
     void printTree(const LinkBinaryTree<Elem> &Bt, print printType);
-
+    template <class Elem>
+    unsigned int leafNum(const LinkBinaryTree<Elem> &root);
     // 定义
     template <class Elem>
     class BinTreeNode
@@ -30,6 +31,7 @@ namespace BT
         friend class LinkBinaryTree<Elem>; // 将LinkBinaryTree类设为友元类
         friend LinkBinaryTree<Elem> create<Elem>(const Elem pre[], const Elem in[], int size);
         friend void printTree<Elem>(const LinkBinaryTree<Elem> &Bt, print printType);
+        friend unsigned int leafNum<Elem>(const LinkBinaryTree<Elem> &root);
 
     protected:
         Elem data;                     // 数据域
@@ -52,6 +54,7 @@ namespace BT
         // 将构建函数设为友元
         friend LinkBinaryTree<Elem> create<Elem>(const Elem pre[], const Elem in[], int size);
         friend void printTree<Elem>(const LinkBinaryTree<Elem> &Bt, print printType);
+        friend unsigned int leafNum<Elem>(const LinkBinaryTree<Elem> &root);
 
     protected:
         using Uint = unsigned int;
@@ -62,7 +65,7 @@ namespace BT
         void inOrder(const BinTreeNode<Elem> *rt) const;   // 中序遍历
         void postOrder(const BinTreeNode<Elem> *rt) const; // 后序遍历
         void levelOrder() const;                           // 层序遍历
-
+        Uint leafNum(const BinTreeNode<Elem> *rt) const;   // 求树的叶子结点个数
     public:
         LinkBinaryTree(); // 默认构造函数
         LinkBinaryTree(LinkBinaryTree<Elem> &&src);
@@ -301,6 +304,19 @@ namespace BT
     }
 
     template <class Elem>
+    typename LinkBinaryTree<Elem>::Uint LinkBinaryTree<Elem>::leafNum(const BinTreeNode<Elem> *rt) const
+    {
+        if (rt == nullptr)
+            return 0;
+        else if (rt->leftChild == nullptr && rt->rightChild == nullptr)
+            return 1;
+        else
+        {
+            return leafNum(rt->leftChild) + leafNum(rt->rightChild);
+        }
+    }
+
+    template <class Elem>
     typename LinkBinaryTree<Elem>::Uint LinkBinaryTree<Elem>::leafNum() const
     {
         // 层序遍历,遇到叶子结点计数
@@ -340,6 +356,7 @@ namespace BT
             break;
         default:
             std::cout << "Error print::TYPE\n";
+            break;
         }
         std::cout << '\n';
     }
@@ -379,6 +396,12 @@ namespace BT
         BinT.root = BinT.createHelp(root, pre, in, 0, size - 1, 0, size - 1);
         root = nullptr;
         return BinT;
+    }
+
+    template <class Elem>
+    unsigned int leafNum(const LinkBinaryTree<Elem> &Bintree)
+    {
+        return Bintree.leafNum(Bintree.root);
     }
 } // namespace BT
 
