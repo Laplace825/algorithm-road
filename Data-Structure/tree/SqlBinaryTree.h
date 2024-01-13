@@ -116,9 +116,8 @@ namespace BT
             throw "Error index";
 
         /**
-         * @note : 这里需要注意偶数的情况,偶数整除2会导致位置多1
-         *
-         *
+         * @note : 
+         * 这里需要注意偶数的情况,偶数整除2会导致位置多1
          * 递归版
             if (ind_1st != ind_2nd)
             {

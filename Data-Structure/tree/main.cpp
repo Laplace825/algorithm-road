@@ -28,6 +28,7 @@ int main()
     LinkBtr.inOrder();
     std::cout << "depth: " << LinkBtr.depth() << '\n';
     std::cout << "maxWideth: " << LinkBtr.maxWidth() << '\n';
+    std::cout << "leafNum: " << BT::leafNum(LinkBtr) << '\n';
     char arr[] = {'A', 'B', 'C', 'D', 'E', 'F'};
     /*
             A
