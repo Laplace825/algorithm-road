@@ -18,17 +18,18 @@ int main()
          K
     */
     BT::LinkBinaryTree<char> LinkBtr{std::move(BT::create(pre, in, 10))};
-    BT::printTree(LinkBtr, BT::PRE);
-    BT::printTree(LinkBtr, BT::IN);
-    BT::printTree(LinkBtr, BT::POST);
-    BT::printTree(LinkBtr, BT::LEVEL);
-    std::cout << "preOrder with no recursion: ";
-    LinkBtr.preOrder();
-    std::cout << "inOrder with no recursion: ";
-    LinkBtr.inOrder();
-    std::cout << "depth: " << LinkBtr.depth() << '\n';
-    std::cout << "maxWideth: " << LinkBtr.maxWidth() << '\n';
-    std::cout << "leafNum: " << BT::leafNum(LinkBtr) << '\n';
+    // BT::printTree(LinkBtr, BT::PRE);
+    // BT::printTree(LinkBtr, BT::IN);
+    // BT::printTree(LinkBtr, BT::POST);
+    // // BT::printTree(LinkBtr, BT::LEVEL);
+    // // std::cout << "preOrder with no recursion: ";
+    // // LinkBtr.preOrder();
+    // std::cout << "inOrder with no recursion: ";
+    // LinkBtr.inOrder();
+    // LinkBtr.postOrder();
+    // // std::cout << "depth: " << LinkBtr.depth() << '\n';
+    // std::cout << "maxWideth: " << LinkBtr.maxWidth() << '\n';
+    // std::cout << "leafNum: " << BT::leafNum(LinkBtr) << '\n';
     char arr[] = {'A', 'B', 'C', 'D', 'E', 'F'};
     /*
             A
