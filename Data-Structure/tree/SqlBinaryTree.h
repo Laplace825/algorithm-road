@@ -1,5 +1,6 @@
 #ifndef SQL_BINARY_TREE_H
 #define SQL_BINARY_TREE_H
+#include <iostream>
 #include <cstring>
 
 namespace BT
@@ -9,7 +10,7 @@ namespace BT
     class SqlBinaryTree;
     // 声明打印函数
     template <typename T>
-    void printTree(SqlBinaryTree<T> &sqlBt, print printType = PRE, unsigned int index = 0);
+    void printTree(SqlBinaryTree<T> &sqlBt, print printType = PRE, unsigned int index = 1);
     template <typename T>
     class SqlBinaryTree
     {
@@ -30,10 +31,10 @@ namespace BT
             length = 0;
         }
         // 均使用递归实现,index表示根节点在数组中的下标,默认为0
-        void preOrder(unsigned int index = 0) const;
-        void inOrder(unsigned int index = 0) const;
-        void postOrder(unsigned int index = 0) const;
-        void levelOrder(unsigned int index = 0) const;
+        void preOrder(unsigned int index = 1) const;
+        void inOrder(unsigned int index = 1) const;
+        void postOrder(unsigned int index = 1) const;
+        void levelOrder(unsigned int index = 1) const;
 
         T &operator[](int index) { return data[index]; }
         T &findNearParent(int ind_1st, int ind_2nd) const;
@@ -45,9 +46,9 @@ namespace BT
 
     template <typename T>
     SqlBinaryTree<T>::SqlBinaryTree(const SqlBinaryTree<T> &src)
-        : data(new T[src.length]), length(src.length)
+        : data(new T[src.length + 1]), length(src.length)
     {
-        memcpy(data, src.data, length);
+        memcpy(data + 1, src.data, length);
     }
 
     template <typename T>
@@ -60,19 +61,19 @@ namespace BT
 
     template <typename T>
     SqlBinaryTree<T>::SqlBinaryTree(const T arr[], int size)
-        : data(new T[size]), length(size)
+        : data(new T[size + 1]), length(size)
     {
-        memcpy(data, arr, size);
+        memcpy(data + 1, arr, size);
     }
 
     template <typename T>
     void SqlBinaryTree<T>::preOrder(unsigned int index) const
     {
-        if (index >= length)
+        if (index > length)
             return;
         std::cout << data[index] << ' ';
-        int left = 2 * index + 1;
-        int right = 2 * index + 2;
+        int left = 2 * index;
+        int right = 2 * index + 1;
         preOrder(left);
         preOrder(right);
     }
@@ -80,10 +81,10 @@ namespace BT
     template <typename T>
     void SqlBinaryTree<T>::inOrder(unsigned int index) const
     {
-        if (index >= length)
+        if (index > length)
             return;
-        int left = 2 * index + 1;
-        int right = 2 * index + 2;
+        int left = 2 * index;
+        int right = 2 * index + 1;
         inOrder(left);
         std::cout << data[index] << ' ';
         inOrder(right);
@@ -92,10 +93,10 @@ namespace BT
     template <typename T>
     void SqlBinaryTree<T>::postOrder(unsigned int index) const
     {
-        if (index >= length)
+        if (index > length)
             return;
-        int left = 2 * index + 1;
-        int right = 2 * index + 2;
+        int left = 2 * index;
+        int right = 2 * index + 1;
         postOrder(left);
         postOrder(right);
         std::cout << data[index] << ' ';
@@ -104,7 +105,7 @@ namespace BT
     template <typename T>
     void SqlBinaryTree<T>::levelOrder(unsigned int index) const
     {
-        for (int i = index; i < length; ++i)
+        for (int i = index; i <= length; ++i)
             std::cout << data[i] << ' ';
     }
 
@@ -116,7 +117,7 @@ namespace BT
             throw "Error index";
 
         /**
-         * @note : 
+         * @note :
          * 这里需要注意偶数的情况,偶数整除2会导致位置多1
          * 递归版
             if (ind_1st != ind_2nd)
@@ -127,15 +128,21 @@ namespace BT
                     findNearParent(ind_1st, ind_2nd % 2 == 0 ? ind_2nd = ind_2nd / 2 - 1 : ind_2nd /= 2);
             }
         */
+        auto Max = [&]() -> int &
+        {
+            return ind_1st > ind_2nd ? ind_1st : ind_2nd;
+        };
         while (ind_1st != ind_2nd)
         {
-            if (ind_1st > ind_2nd)
-                ind_1st % 2 == 0 ? ind_1st = ind_1st / 2 - 1 : ind_1st /= 2;
-            if (ind_1st < ind_2nd)
-                ind_2nd % 2 == 0 ? ind_2nd = ind_2nd / 2 - 1 : ind_2nd /= 2;
+            int &max_index = Max();
+            max_index % 2 == 0 ? max_index = max_index /= 2 : max_index = max_index / 2 - 1;
         }
         return data[ind_1st]; // 返回最近公共祖先
     }
+    // if (ind_1st > ind_2nd)
+    //     ind_1st % 2 == 0 ? ind_1st = ind_1st / 2 - 1 : ind_1st /= 2;
+    // if (ind_1st < ind_2nd)
+    //     ind_2nd % 2 == 0 ? ind_2nd = ind_2nd / 2 - 1 : ind_2nd /= 2;
 
     template <typename T>
     void printTree(SqlBinaryTree<T> &sqlBt, print printType, unsigned int index)

@@ -44,6 +44,8 @@ namespace BT
         {
             delete leftChild;
             delete rightChild;
+            leftChild = nullptr;
+            rightChild = nullptr;
         }
     };
 
@@ -59,7 +61,7 @@ namespace BT
     protected:
         using Uint = unsigned int;
         BinTreeNode<Elem> *root; // 根结点指针
-        BinTreeNode<Elem> *createHelp(BinTreeNode<Elem> *&root, const Elem pre[], const Elem in[], int pleft, int pright, int ileft, int iright);
+        BinTreeNode<Elem> *&createHelp(BinTreeNode<Elem> *&root, const Elem pre[], const Elem in[], int pleft, int pright, int ileft, int iright);
         Uint depth(const BinTreeNode<Elem> *rt) const;     // 求树的深度
         void preOrder(const BinTreeNode<Elem> *rt) const;  // 先序遍历
         void inOrder(const BinTreeNode<Elem> *rt) const;   // 中序遍历
@@ -71,11 +73,12 @@ namespace BT
         LinkBinaryTree(LinkBinaryTree<Elem> &&src);
         LinkBinaryTree(const LinkBinaryTree<Elem> &src) = delete;
         ~LinkBinaryTree();
-        void preOrder() const; // 非递归前序遍历
-        void inOrder() const;  // 非递归中序遍历
-        Uint depth() const;    // 求树的深度,递归
-        Uint maxWidth() const; // 求树的最大宽度,非递归
-        Uint leafNum() const;  // 求树的叶子结点个数,非递归
+        void preOrder() const;  // 非递归前序遍历
+        void inOrder() const;   // 非递归中序遍历
+        void postOrder() const; // 非递归后序遍历
+        Uint depth() const;     // 求树的深度,递归
+        Uint maxWidth() const;  // 求树的最大宽度,非递归
+        Uint leafNum() const;   // 求树的叶子结点个数,非递归
     };
 
     template <class Elem>
@@ -107,18 +110,32 @@ namespace BT
     template <class Elem>
     LinkBinaryTree<Elem>::~LinkBinaryTree()
     {
-        std::deque<BinTreeNode<Elem> *> que;
-        if (root != nullptr)
-            que.push_front(root);
-        while (!que.empty())
-        {
-            if (que.front()->leftChild != nullptr)
-                que.push_back(que.front()->leftChild);
-            if (que.front()->rightChild != nullptr)
-                que.push_back(que.front()->rightChild);
-            delete que.front();
-            que.pop_front();
-        }
+        delete root;
+        root = nullptr;
+        /**
+         * @note : 貌似直接 delete root 整颗树都会被删
+         * 我认为可能是因为 delete root 需要释放 root 指向的结点
+         * root 结点具有的 leftchild 和 rightchild 指针也被释放
+         * 而这两个指针释放时也调用该结点的析构函数
+         * 所以不断往下继续,只要 delete root 后都被删除了
+        */
+        // std::deque<BinTreeNode<Elem> *> que;
+        // BinTreeNode<Elem> *cur = nullptr;
+        // if (root != nullptr)
+        //     que.push_front(root);
+        // while (!que.empty())
+        // {
+        //     cur = que.front();
+        //     que.pop_front();
+        //     if (cur->leftChild != nullptr)
+        //         que.push_back(cur->leftChild);
+        //     if (cur->rightChild != nullptr)
+        //         que.push_back(cur->rightChild);
+        //     cur->leftChild = nullptr;
+        //     cur->rightChild = nullptr;
+        //     delete cur;
+        // }
+        // root = nullptr;
     }
 
     template <class Elem>
@@ -201,9 +218,82 @@ namespace BT
         std::cout << '\n';
     }
 
+    // template <class Elem>
+    // void LinkBinaryTree<Elem>::inOrder() const
+    // {
+    //     // 使用栈非递归中序遍历
+    //     std::deque<BinTreeNode<Elem> *> stk;
+    //     // 使用标志位记录结点是否被访问过
+    //     std::deque<Uint> flag;
+    //     // 这里是因为当左子树全遍历完后,stk和flag都空,此时flag.back()会出错,所以先push_back一个0
+    //     flag.push_back(0);
+    //     // 用tmp记录被弹出的结点,判断是否存在右子树
+    //     BinTreeNode<Elem> *tmp = nullptr;
+    //     if (root != nullptr)
+    //     {
+    //         stk.push_back(root);
+    //         flag.push_back(0);
+    //     }
+    //     while (!stk.empty())
+    //     {
+    //         if (stk.back()->leftChild != nullptr && flag.back() == 0)
+    //         {
+    //             stk.push_back(stk.back()->leftChild);
+    //             flag.push_back(0);
+    //         }
+    //         else
+    //         {
+    //             std::cout << stk.back()->data << ' ';
+    //             tmp = stk.back();
+    //             stk.pop_back();
+    //             flag.pop_back();
+    //             (flag.back())++;
+    //             if (tmp->rightChild != nullptr)
+    //             {
+    //                 stk.push_back(tmp->rightChild);
+    //                 flag.push_back(0);
+    //             }
+    //         }
+    //     }
+    //     std::cout << '\n';
+    // }
+
     template <class Elem>
     void LinkBinaryTree<Elem>::inOrder() const
     {
+        // 使用栈非递归中序遍历
+        // 使用标志位记录结点是否被访问过
+        // std::deque<Uint> flag;
+        // 这里是因为当左子树全遍历完后,stk和flag都空,此时flag.back()会出错,所以先push_back一个0
+        // flag.push_back(0);
+        // 用tmp记录被弹出的结点,判断是否存在右子树
+        std::deque<BinTreeNode<Elem> *> stk;
+        BinTreeNode<Elem> *rt = this->root;
+        BinTreeNode<Elem> *tmp = nullptr;
+        while (rt || (!stk.empty()))
+        {
+            if (rt)
+            {
+                stk.push_back(rt);
+                rt = rt->leftChild;
+            }
+            else
+            {
+                tmp = stk.back();
+                stk.pop_back();
+                std::cout << tmp->data << ' ';
+                rt = tmp->rightChild;
+            }
+        }
+        std::cout << '\n';
+    }
+
+    template <class Elem>
+    void LinkBinaryTree<Elem>::postOrder() const
+    {
+        /**
+         * @todo : 完成非递归后序遍历
+         * */
         // 使用栈非递归中序遍历
         std::deque<BinTreeNode<Elem> *> stk;
         // 使用标志位记录结点是否被访问过
@@ -226,14 +316,17 @@ namespace BT
             }
             else
             {
-                std::cout << stk.back()->data << ' ';
-                tmp = stk.back();
-                stk.pop_back();
-                flag.pop_back();
-                (flag.back())++;
-                if (tmp->rightChild != nullptr)
+                if (stk.back()->rightChild == nullptr || flag.back() == 2 || tmp == stk.back()->rightChild)
                 {
-                    stk.push_back(tmp->rightChild);
+                    tmp = stk.back();
+                    std::cout << stk.back()->data << ' ';
+                    stk.pop_back();
+                    flag.pop_back();
+                    flag.back()++;
+                }
+                else
+                {
+                    stk.push_back(stk.back()->rightChild);
                     flag.push_back(0);
                 }
             }
@@ -364,7 +457,7 @@ namespace BT
     // 声明构建函数
     // 对rt指针的引用保证rt指针的改变能够传递到上一层递归
     template <class Elem>
-    BinTreeNode<Elem> *LinkBinaryTree<Elem>::createHelp(BinTreeNode<Elem> *&rt, const Elem pre[], const Elem in[], int pleft, int pright, int ileft, int iright)
+    BinTreeNode<Elem> *&LinkBinaryTree<Elem>::createHelp(BinTreeNode<Elem> *&rt, const Elem pre[], const Elem in[], int pleft, int pright, int ileft, int iright)
     {
         if (ileft > iright)
             rt = nullptr;
@@ -391,10 +484,8 @@ namespace BT
     template <class Elem>
     LinkBinaryTree<Elem> create(const Elem pre[], const Elem in[], const int size)
     {
-        BinTreeNode<Elem> *root;
         LinkBinaryTree<Elem> BinT;
-        BinT.root = BinT.createHelp(root, pre, in, 0, size - 1, 0, size - 1);
-        root = nullptr;
+        BinT.createHelp(BinT.root, pre, in, 0, size - 1, 0, size - 1);
         return BinT;
     }
 
