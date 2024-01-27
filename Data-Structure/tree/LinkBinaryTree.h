@@ -118,7 +118,7 @@ namespace BT
          * root 结点具有的 leftchild 和 rightchild 指针也被释放
          * 而这两个指针释放时也调用该结点的析构函数
          * 所以不断往下继续,只要 delete root 后都被删除了
-        */
+         */
         // std::deque<BinTreeNode<Elem> *> que;
         // BinTreeNode<Elem> *cur = nullptr;
         // if (root != nullptr)
