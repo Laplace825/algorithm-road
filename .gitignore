@@ -1,0 +1,7 @@
+*.svg
+*.html
+*.pdf
+*.png
+*.exe
+*.sh
+build/

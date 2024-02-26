@@ -2,6 +2,7 @@
 #define BINARY_TREE_H
 #include <iostream>
 #include <deque>
+#include <stack>
 
 namespace BT
 {
@@ -11,7 +12,8 @@ namespace BT
         PRE,
         IN,
         POST,
-        LEVEL
+        LEVEL,
+        DOUBLE
     };
     // 各种声明
     template <class Elem>
@@ -62,23 +64,25 @@ namespace BT
         using Uint = unsigned int;
         BinTreeNode<Elem> *root; // 根结点指针
         BinTreeNode<Elem> *&createHelp(BinTreeNode<Elem> *&root, const Elem pre[], const Elem in[], int pleft, int pright, int ileft, int iright);
-        Uint depth(const BinTreeNode<Elem> *rt) const;     // 求树的深度
-        void preOrder(const BinTreeNode<Elem> *rt) const;  // 先序遍历
-        void inOrder(const BinTreeNode<Elem> *rt) const;   // 中序遍历
-        void postOrder(const BinTreeNode<Elem> *rt) const; // 后序遍历
-        void levelOrder() const;                           // 层序遍历
-        Uint leafNum(const BinTreeNode<Elem> *rt) const;   // 求树的叶子结点个数
+        Uint depth(const BinTreeNode<Elem> *rt) const;       // 求树的深度
+        void preOrder(const BinTreeNode<Elem> *rt) const;    // 先序遍历
+        void inOrder(const BinTreeNode<Elem> *rt) const;     // 中序遍历
+        void postOrder(const BinTreeNode<Elem> *rt) const;   // 后序遍历
+        void levelOrder() const;                             // 层序遍历
+        void doubleOrder(const BinTreeNode<Elem> *rt) const; // 递归双序遍历
+        Uint leafNum(const BinTreeNode<Elem> *rt) const;     // 求树的叶子结点个数
     public:
         LinkBinaryTree(); // 默认构造函数
         LinkBinaryTree(LinkBinaryTree<Elem> &&src);
         LinkBinaryTree(const LinkBinaryTree<Elem> &src) = delete;
         ~LinkBinaryTree();
-        void preOrder() const;  // 非递归前序遍历
-        void inOrder() const;   // 非递归中序遍历
-        void postOrder() const; // 非递归后序遍历
-        Uint depth() const;     // 求树的深度,递归
-        Uint maxWidth() const;  // 求树的最大宽度,非递归
-        Uint leafNum() const;   // 求树的叶子结点个数,非递归
+        void preOrder() const;    // 非递归前序遍历
+        void inOrder() const;     // 非递归中序遍历
+        void postOrder() const;   // 非递归后序遍历
+        void doubleOrder() const; // 非递归双序遍历
+        Uint depth() const;       // 求树的深度,递归
+        Uint maxWidth() const;    // 求树的最大宽度,非递归
+        Uint leafNum() const;     // 求树的叶子结点个数,非递归
     };
 
     template <class Elem>
@@ -190,29 +194,58 @@ namespace BT
     }
 
     template <class Elem>
+    void LinkBinaryTree<Elem>::doubleOrder(const BinTreeNode<Elem> *rt) const
+    {
+        if (rt != nullptr)
+        {
+            std::cout << rt->data << ' ';
+            doubleOrder(rt->leftChild);
+            std::cout << rt->data << ' ';
+            doubleOrder(rt->rightChild);
+        }
+    }
+
+    template <class Elem>
     void LinkBinaryTree<Elem>::preOrder() const
     {
-        // 使用栈非递归前序遍历
+        // // 使用栈非递归前序遍历
+        // std::deque<BinTreeNode<Elem> *> stk;
+        // // 用tmp记录被弹出的结点,判断是否存在右子树
+        // BinTreeNode<Elem> *tmp = nullptr;
+        // if (root != nullptr)
+        // {
+        //     stk.push_back(root);
+        // }
+        // while (!stk.empty())
+        // {
+        //     std::cout << stk.back()->data << ' ';
+        //     tmp = stk.back();
+        //     stk.pop_back();
+        //     // 先入右孩子,保证先孩子先输出
+        //     if (tmp->rightChild != nullptr)
+        //     {
+        //         stk.push_back(tmp->rightChild);
+        //     }
+        //     if (tmp->leftChild != nullptr)
+        //     {
+        //         stk.push_back(tmp->leftChild);
+        //     }
+        // }
+        // std::cout << '\n';
         std::deque<BinTreeNode<Elem> *> stk;
-        // 用tmp记录被弹出的结点,判断是否存在右子树
-        BinTreeNode<Elem> *tmp = nullptr;
-        if (root != nullptr)
+        BinTreeNode<Elem> *rt = this->root;
+        while (rt || (!stk.empty()))
         {
-            stk.push_back(root);
-        }
-        while (!stk.empty())
-        {
-            std::cout << stk.back()->data << ' ';
-            tmp = stk.back();
-            stk.pop_back();
-            // 先入右孩子,保证先孩子先输出
-            if (tmp->rightChild != nullptr)
+            if (rt)
             {
-                stk.push_back(tmp->rightChild);
+                stk.push_back(rt);
+                std::cout << rt->data << ' ';
+                rt = rt->leftChild;
             }
-            if (tmp->leftChild != nullptr)
+            else
             {
-                stk.push_back(tmp->leftChild);
+                rt = stk.back()->rightChild;
+                stk.pop_back();
             }
         }
         std::cout << '\n';
@@ -335,6 +368,51 @@ namespace BT
     }
 
     template <class Elem>
+    void LinkBinaryTree<Elem>::doubleOrder() const
+    {
+        std::deque<BinTreeNode<Elem> *> stk;
+        std::deque<Uint> flag;
+        BinTreeNode<Elem> *tmp = nullptr;
+        if (root != nullptr)
+        {
+            stk.push_back(root);
+            flag.push_back(0);
+        }
+        while (!stk.empty())
+        {
+            if (stk.back()->leftChild != nullptr && flag.back() == 0)
+            {
+                stk.push_back(stk.back()->leftChild);
+                flag.push_back(0);
+            }
+            else
+            {
+                if (flag.back() == 0)
+                {
+                    std::cout << stk.back()->data << ' ';
+                    flag.back()++;
+                }
+                if (stk.back()->rightChild != nullptr && flag.back() == 1)
+                {
+                    stk.push_back(stk.back()->rightChild);
+                    flag.push_back(0);
+                }
+                else
+                {
+                    tmp = stk.back();
+                    stk.pop_back();
+                    flag.pop_back();
+                    if (tmp->rightChild != nullptr)
+                    {
+                        std::cout << tmp->rightChild->data << ' ';
+                    }
+                }
+            }
+        }
+        std::cout << '\n';
+    }
+
+    template <class Elem>
     typename LinkBinaryTree<Elem>::Uint LinkBinaryTree<Elem>::depth() const
     {
         if (root == nullptr)
@@ -446,6 +524,9 @@ namespace BT
             break;
         case LEVEL:
             Bt.levelOrder();
+            break;
+        case DOUBLE:
+            Bt.doubleOrder(Bt.root);
             break;
         default:
             std::cout << "Error print::TYPE\n";

@@ -1,0 +1,1 @@
+add_executable(move-substr-tail main.cpp)

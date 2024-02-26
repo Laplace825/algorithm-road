@@ -1,0 +1,6 @@
+add_subdirectory(SeqList)
+add_subdirectory(Shared-Stack)
+add_subdirectory(tree)
+add_subdirectory(TriSpareMatrix)
+add_subdirectory(Use-Queue-Simulate-Stack)
+add_subdirectory(Use-Stack-Simulate-Queue)
