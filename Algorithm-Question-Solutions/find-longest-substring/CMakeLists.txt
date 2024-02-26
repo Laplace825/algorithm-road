@@ -1,0 +1,1 @@
+add_executable(find-longest-substring main.cpp)

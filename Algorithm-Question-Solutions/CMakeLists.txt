@@ -1,0 +1,6 @@
+add_subdirectory(erase-element-array)
+add_subdirectory(erase-near-char)
+add_subdirectory(find-longest-substring)
+add_subdirectory(KMP)
+add_subdirectory(move-substr-tail)
+add_subdirectory(NifixExper-to-PostExper)

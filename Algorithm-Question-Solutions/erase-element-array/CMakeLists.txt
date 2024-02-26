@@ -1,0 +1,1 @@
+add_executable(erase-element-array main.cpp)

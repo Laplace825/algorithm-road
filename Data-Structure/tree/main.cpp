@@ -4,8 +4,8 @@
 
 int main()
 {
-    char pre[] = {'A', 'B', 'D', 'H', 'I', 'E', 'J', 'K', 'C', 'F'}; // 先序序列
-    char in[] = {'H', 'D', 'I', 'B', 'J', 'K', 'E', 'A', 'C', 'F'};  // 中序序列
+    const char pre[] = {'A', 'B', 'D', 'H', 'I', 'E', 'J', 'K', 'C', 'F'}; // 先序序列
+    constexpr char in[] = {'H', 'D', 'I', 'B', 'J', 'K', 'E', 'A', 'C', 'F'};  // 中序序列
     /*
             A
         __//___
@@ -23,13 +23,15 @@ int main()
     // BT::printTree(LinkBtr, BT::POST);
     // BT::printTree(LinkBtr, BT::LEVEL);
     // std::cout << "preOrder with no recursion: ";
-    // LinkBtr.preOrder();
-    std::cout << "inOrder with no recursion: ";
-    LinkBtr.inOrder();
+    LinkBtr.preOrder();
+    // std::cout << "inOrder with no recursion: ";
+    // LinkBtr.inOrder();
     // LinkBtr.postOrder();
+    // BT::printTree(LinkBtr, BT::DOUBLE);
+    // LinkBtr.doubleOrder();
     // std::cout << "depth: " << LinkBtr.depth() << '\n';
     // std::cout << "maxWideth: " << LinkBtr.maxWidth() << '\n';
-    // std::cout << "leafNum: " << BT::leafNum(LinkBtr) << '\n';
+    std::cout << "leafNum: " << BT::leafNum(LinkBtr) << '\n';
     // char arr[] = {'A', 'B', 'C', 'D', 'E', 'F'};
     // /*
     //         A

@@ -1,0 +1,1 @@
+add_executable(erase-near-char main.cpp)
