@@ -4,5 +4,5 @@
 *.png
 *.exe
 *.sh
-.vscode/
+.vscode/*
 build/
