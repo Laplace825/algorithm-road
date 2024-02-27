@@ -10,7 +10,7 @@ namespace BT
     class SqlBinaryTree;
     // 声明打印函数
     template <typename T>
-    void printTree(SqlBinaryTree<T> &sqlBt, print printType = PRE, unsigned int index = 1);
+    void printTree(SqlBinaryTree<T> &sqlBt, print printType = print::PRE, unsigned int index = 1);
     template <typename T>
     class SqlBinaryTree
     {
@@ -63,7 +63,7 @@ namespace BT
     SqlBinaryTree<T>::SqlBinaryTree(const T arr[], int size)
         : data(new T[size + 1]), length(size)
     {
-        memcpy(data + 1, arr, size);
+        std::copy(arr, arr + size, data + 1);
     }
 
     template <typename T>
@@ -114,7 +114,7 @@ namespace BT
     {
         // 找到两个节点的最近公共祖先
         if (ind_1st >= length || ind_2nd >= length)
-            throw "Error index";
+            throw std::invalid_argument("Error index");
 
         /**
          * @note :
@@ -128,37 +128,37 @@ namespace BT
                     findNearParent(ind_1st, ind_2nd % 2 == 0 ? ind_2nd = ind_2nd / 2 - 1 : ind_2nd /= 2);
             }
         */
-        auto Max = [&]() -> int &
-        {
-            return ind_1st > ind_2nd ? ind_1st : ind_2nd;
-        };
+        // auto Max = [&]() -> int &
+        // {
+        //     return ind_1st > ind_2nd ? ind_1st : ind_2nd;
+        // };
         while (ind_1st != ind_2nd)
         {
-            int &max_index = Max();
-            max_index % 2 == 0 ? max_index = max_index /= 2 : max_index = max_index / 2 - 1;
+            if (ind_1st > ind_2nd)
+                ind_1st % 2 == 0 ? ind_1st = ind_1st / 2 - 1 : ind_1st /= 2;
+            if (ind_1st < ind_2nd)
+                ind_2nd % 2 == 0 ? ind_2nd = ind_2nd / 2 - 1 : ind_2nd /= 2;
+            // int &max_index = Max();
+            // max_index % 2 == 0 ? max_index = max_index /= 2 : max_index = max_index / 2 - 1;
         }
         return data[ind_1st]; // 返回最近公共祖先
     }
-    // if (ind_1st > ind_2nd)
-    //     ind_1st % 2 == 0 ? ind_1st = ind_1st / 2 - 1 : ind_1st /= 2;
-    // if (ind_1st < ind_2nd)
-    //     ind_2nd % 2 == 0 ? ind_2nd = ind_2nd / 2 - 1 : ind_2nd /= 2;
 
     template <typename T>
     void printTree(SqlBinaryTree<T> &sqlBt, print printType, unsigned int index)
     {
         switch (printType)
         {
-        case PRE:
+        case print::PRE:
             sqlBt.preOrder(index);
             break;
-        case IN:
+        case print::IN:
             sqlBt.inOrder(index);
             break;
-        case POST:
+        case print::POST:
             sqlBt.postOrder(index);
             break;
-        case LEVEL:
+        case print::LEVEL:
             sqlBt.levelOrder(index);
             break;
         default:
