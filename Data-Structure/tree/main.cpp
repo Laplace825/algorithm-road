@@ -24,13 +24,13 @@ int main()
     BT::printTree(LinkBtr, BT::print::LEVEL);
     std::cout << "preOrder with no recursion: ";
     LinkBtr.preOrder();
-    // std::cout << "inOrder with no recursion: ";
-    // LinkBtr.inOrder();
-    // LinkBtr.postOrder();
-    // BT::printTree(LinkBtr, BT::DOUBLE);
-    // LinkBtr.doubleOrder();
-    // std::cout << "depth: " << LinkBtr.depth() << '\n';
-    // std::cout << "maxWideth: " << LinkBtr.maxWidth() << '\n';
+    std::cout << "inOrder with no recursion: ";
+    LinkBtr.inOrder();
+    LinkBtr.postOrder();
+    BT::printTree(LinkBtr, BT::print::DOUBLE);
+    LinkBtr.doubleOrder();
+    std::cout << "depth: " << LinkBtr.depth() << '\n';
+    std::cout << "maxWideth: " << LinkBtr.maxWidth() << '\n';
     std::cout << "leafNum: " << BT::leafNum(LinkBtr) << '\n';
     constexpr char arr[] = {'A', 'B', 'C', 'D', 'E', 'F'};
     // /*
@@ -41,9 +41,9 @@ int main()
     //  D     E   F
     // */
     BT::SqlBinaryTree<char> sqlBtr{arr, 6};
-    // BT::printTree(sqlBtr, BT::PRE);
-    // BT::printTree(sqlBtr, BT::IN);
-    // BT::printTree(sqlBtr, BT::POST);
-    // BT::printTree(sqlBtr, BT::LEVEL);
+    BT::printTree(sqlBtr, BT::print::PRE);
+    BT::printTree(sqlBtr, BT::print::IN);
+    BT::printTree(sqlBtr, BT::print::POST);
+    BT::printTree(sqlBtr, BT::print::LEVEL);
     std::cout << "findNearParent:" << sqlBtr.findNearParent(1, 4) << '\n';
 }

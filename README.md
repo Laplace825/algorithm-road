@@ -18,7 +18,7 @@ if you want to use `CMake` to build the project, you can use the following comma
 $ mkdir build
 $ cd build
 $ cmake ..
-$ make
+$ cmake --build .
 ```
 
 After that, you can find the executable file in the `build` directory.
