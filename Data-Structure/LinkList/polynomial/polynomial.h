@@ -2,7 +2,6 @@
 #define POLYNOMIAL_H
 #include <vector>
 #include <iostream>
-#include <algorithm>
 #include <array>
 #include <functional>
 
@@ -34,40 +33,35 @@ namespace Poly
             return *this;
         }
         ~Term() = default;
+
+        inline void setCoef(double c) noexcept;
+        inline void setExp(int e) noexcept;
         // 获取系数和指数
         constexpr inline double getCoef() const noexcept { return coef; }
         constexpr inline double getExp() const noexcept { return exp; }
-        // 设置系数和指数
-        inline void setCoef(int c) noexcept { coef = c; }
-        inline void setExp(int e) noexcept { exp = e; }
 
-        constexpr bool operator==(const Term &t)
-            const noexcept
+        constexpr bool operator==(const Term &t) const noexcept
         {
             return exp == t.exp;
         }
-        constexpr bool operator!=(const Term &t)
-            const noexcept
+        constexpr bool operator!=(const Term &t) const noexcept
         {
             return exp != t.exp;
         }
-        constexpr bool operator<(const Term &t)
-            const noexcept
+        constexpr bool operator<(const Term &t) const noexcept
         {
             return exp < t.exp;
         }
-        constexpr bool operator>(const Term &t)
-            const noexcept
+        constexpr bool operator>(const Term &t) const noexcept
         {
             return exp > t.exp;
         }
-        constexpr bool operator<=(const Term &t)
-            const noexcept
+
+        constexpr bool operator<=(const Term &t) const noexcept
         {
             return exp <= t.exp;
         }
-        constexpr bool operator>=(const Term &t)
-            const noexcept
+        constexpr bool operator>=(const Term &t) const noexcept
         {
             return exp >= t.exp;
         }
@@ -78,10 +72,11 @@ namespace Poly
             if (exp != t.exp)
                 throw std::invalid_argument("exponent is not equal");
             if (coef + t.coef == 0)
-                return Term(0, 0);
+                return Term();
             else
                 return Term(coef + t.coef, exp);
         }
+
         // 重载减法运算符
         constexpr Term operator-(const Term &t) const
         {
@@ -107,20 +102,10 @@ namespace Poly
         std::vector<Term> poly; // 多项式
     public:
         void sort(const std::function<bool(const Term &, const Term &)> &cmp = [](const Term &lhs, const Term &rhs)
-                  { return lhs.getExp() < rhs.getExp(); }) noexcept
-        {
-            std::sort(poly.begin(), poly.end(), cmp);
-        }
+                  { return lhs.getExp() < rhs.getExp(); }) noexcept;
 
-        Polynomial() = default;
-        explicit Polynomial(const std::initializer_list<Term> &list)
-            : poly(list)
-        {
-            // 按指数递增排序
-            std::sort(poly.begin(), poly.end(),
-                      [](const Term &a, const Term &b)
-                      { return a.getExp() < b.getExp(); });
-        }
+        Polynomial();
+        explicit Polynomial(const std::initializer_list<Term> &list);
 
         template <std::size_t SIZE>
         explicit Polynomial(const Term (&arr)[SIZE])
@@ -142,153 +127,38 @@ namespace Poly
                       { return a.getExp() < b.getExp(); });
         }
 
-        Polynomial(const Polynomial &p)
-        try : poly(p.poly)
-        {
-        }
-        catch (...)
-        {
-            std::cerr << "copy constructor failed\n";
-            throw;
-        }
+        Polynomial(const Polynomial &p);
 
-        constexpr Polynomial(Polynomial &&p)
-        try : poly(std::move(p.poly))
-        {
-        }
-        catch (...)
-        {
-            std::cerr << "move constructor failed\n";
-            throw;
-        }
+        constexpr Polynomial(Polynomial &&p);
 
-        ~Polynomial() = default;
+        ~Polynomial();
 
-        Polynomial &operator=(Polynomial other) noexcept
-        {
-            std::swap(poly, other.poly);
-            return *this;
-        }
+        Polynomial &operator=(Polynomial other) noexcept;
 
         // 重载加法运算符
-        Polynomial operator+(const Polynomial &other) const
-        {
-            Polynomial result;
-            auto otherIt = other.poly.begin();
-            auto thisIt = poly.begin();
-            // 将长度小的作为主循环
-            while (thisIt != poly.end() && otherIt != other.poly.end())
-            {
-                if (thisIt->exp < otherIt->exp)
-                {
-                    result.poly.push_back(*thisIt);
-                    ++thisIt;
-                }
-                else if (thisIt->exp > otherIt->exp)
-                {
-                    result.poly.push_back(*otherIt);
-                    ++otherIt;
-                }
-                else
-                {
-                    if (thisIt->coef + otherIt->coef != 0)
-                        result.poly.push_back(*thisIt + *otherIt);
-                    ++thisIt;
-                    ++otherIt;
-                }
-            }
-            // 将剩余的元素添加到结果中
-            while (thisIt != poly.end())
-            {
-                result.poly.push_back(*thisIt);
-                ++thisIt;
-            }
-            while (otherIt != other.poly.end())
-            {
-                result.poly.push_back(*otherIt);
-                ++otherIt;
-            }
-            return result;
-        }
+        Polynomial operator+(const Polynomial &other) const;
 
         // 利用加法重载减法运算符
         // 利用传入参数的拷贝构造函数可以减少代码量
-        Polynomial operator-(Polynomial other) const
-        {
-            for (auto &t : other.poly)
-                t.setCoef(-t.getCoef());
-            return *this + other;
-        }
+        Polynomial operator-(Polynomial other) const;
 
-        void insert(const Term &t)
-        {
-            for (auto it = poly.begin(); it != poly.end(); ++it)
-            {
-                if (it->getExp() == t.getExp())
-                {
-                    it->setCoef(it->getCoef() + t.getCoef());
-                    return;
-                }
-                if (it->getExp() > t.getExp())
-                {
-                    poly.insert(it, t);
-                    return;
-                }
-            }
-        }
+        void insert(const Term &t);
 
         void print(const std::size_t &precision = 2,
-                   const std::size_t &width = 6) const
-        {
-            auto t = poly.begin();
-            for (; t != poly.end(); ++t)
-            {
-                std::cout.precision(precision);
-                std::cout.width(width);
-                std::cout << t->getCoef() << "x^" << t->getExp() << " ";
-            }
-            if ((t + 1) == poly.end())
-                std::cout << '\n';
-        }
+                   const std::size_t &width = 6) const;
 
-        inline bool empty() const noexcept
-        {
-            return poly.empty();
-        }
+        inline bool empty() const noexcept;
 
-        inline size_t size() const noexcept
-        {
-            return poly.size();
-        }
+        inline size_t size() const noexcept;
+        double cal(double x) const noexcept;
 
-        double cal(double x) const noexcept
-        {
-            // 递归计算多项式的值
-            double result = 0;
-            for (auto &t : poly)
-                result += t.cal(x);
-            return result;
-        }
+        auto begin() noexcept;
 
-        auto begin() noexcept
-        {
-            return poly.begin();
-        }
+        auto end() noexcept;
 
-        auto end() noexcept
-        {
-            return poly.end();
-        }
+        auto cbegin() const noexcept;
 
-        auto cbegin() const noexcept
-        {
-            return poly.cbegin();
-        }
-
-        auto cend() const noexcept
-        {
-            return poly.cend();
-        }
+        auto cend() const noexcept;
     };
 
     // 编译期可求值的多项式类
@@ -299,9 +169,9 @@ namespace Poly
         std::array<Term, SIZE> poly;
         constexpr void sort() noexcept
         {
-            auto cmp = [](const Term &lhs, const Term &rhs)
-            { return lhs.getExp() < rhs.getExp(); };
-            std::sort(poly.begin(), poly.end(), cmp);
+            std::sort(poly.begin(), poly.end(),
+                      [](const Term &a, const Term &b)
+                      { return a.getExp() < b.getExp(); });
         }
 
     public:
@@ -369,7 +239,7 @@ namespace Poly
                 result.poly.push_back(*otherIt);
                 ++otherIt;
             }
-            return Polynomial_C(result);
+            return Polynomial_C<SIZE>(result);
         }
 
         constexpr Polynomial_C operator-(Polynomial_C other) const
@@ -422,4 +292,5 @@ namespace Poly
         }
     };
 } // namespace Poly
+
 #endif // POLYNOMIAL_H
