@@ -7,7 +7,7 @@
 namespace BT
 {
 
-    enum print
+    enum class print
     {
         PRE,
         IN,
@@ -513,19 +513,19 @@ namespace BT
     {
         switch (printType)
         {
-        case PRE:
+        case print::PRE:
             Bt.preOrder(Bt.root);
             break;
-        case IN:
+        case print::IN:
             Bt.inOrder(Bt.root);
             break;
-        case POST:
+        case print::POST:
             Bt.postOrder(Bt.root);
             break;
-        case LEVEL:
+        case print::LEVEL:
             Bt.levelOrder();
             break;
-        case DOUBLE:
+        case print::DOUBLE:
             Bt.doubleOrder(Bt.root);
             break;
         default:
