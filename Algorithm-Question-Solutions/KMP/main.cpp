@@ -1,19 +1,25 @@
 #include "KMP.h"
 #include <format>
-#include <bits/stdc++.h>
-
-using fnPtr = std::vector<int> (*[3])(const std::string &);
-
-int main(int argc, char **argv)
+#include <string>
+#include <vector>
+#include <map>
+#include <iostream>
+#include <functional>
+int main()
 {
 
     using namespace std;
     string text = "abcaabbabcabaacbacba";
-    fnPtr fnArr = {findPattern, getNext, getNextVal};
+    cout << "the text is: " << text << "\n";
+    map<string, function<vector<int>(const string &)>> m{
+        {"findPattern", findPattern},
+        {"getNext", getNext},
+        {"getNextVal", getNextVal}};
     vector<int> patternArray;
-    for (auto fn : fnArr)
+    for (auto fn : m)
     {
-        patternArray = fn(text);
+        cout << format("the result of {} is: ", fn.first);
+        patternArray = move(fn.second(text));
         for (auto elem : patternArray)
             cout << elem << ' ';
         patternArray.clear();

@@ -7,13 +7,13 @@ int main()
     using std::cin;
     SimulateQueue<int> sq;
     // write a test case
-    cout << "Enqueue:\n";
+    cout << "Enqueue sequence :\n";
     for(int i = 0; i < 10; i++)
     {
         cout << i << ' ';
         sq.EnQueue(i);
     }
-    cout << "\nDequeue:\n";
+    cout << "\nDequeue :\n";
     for(int i = 0; i < 8; i++) // 0 1 2 3 4 5 6 7
         cout << sq.DeQueue() << " ";
     cout << "\nEnqueue 10\n";
