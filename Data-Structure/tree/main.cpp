@@ -18,17 +18,24 @@ int main()
          K
     */
     BT::LinkBinaryTree<char> LinkBtr{std::move(BT::create(pre, in, 10))};
+    std::cout << "pre,in,post,double with recursion: ";
     BT::printTree(LinkBtr, BT::print::PRE);
+    std::cout << "==================\n";
     BT::printTree(LinkBtr, BT::print::IN);
+    std::cout << "==================\n";
     BT::printTree(LinkBtr, BT::print::POST);
-    BT::printTree(LinkBtr, BT::print::LEVEL);
-    std::cout << "preOrder with no recursion: ";
-    LinkBtr.preOrder();
-    std::cout << "inOrder with no recursion: ";
-    LinkBtr.inOrder();
-    LinkBtr.postOrder();
+    std::cout << "==================\n";
     BT::printTree(LinkBtr, BT::print::DOUBLE);
-    LinkBtr.doubleOrder();
+    std::cout << "==================\n";
+    std::cout << "pre,in,post,level with no recursion: \n";
+    LinkBtr.preOrder();
+    std::cout << "==================\n";
+    LinkBtr.inOrder();
+    std::cout << "==================\n";
+    LinkBtr.postOrder();
+    std::cout << "==================\n";
+    LinkBtr.levelOrder();
+    std::cout << "==================\n";
     std::cout << "depth: " << LinkBtr.depth() << '\n';
     std::cout << "maxWideth: " << LinkBtr.maxWidth() << '\n';
     std::cout << "leafNum: " << BT::leafNum(LinkBtr) << '\n';
@@ -41,9 +48,15 @@ int main()
     //  D     E   F
     // */
     BT::SqlBinaryTree<char> sqlBtr{arr, 6};
+    std::cout << "pre,in,post,level with recursion: \n";
+    std::cout << "==================\n";
     BT::printTree(sqlBtr, BT::print::PRE);
+    std::cout << "==================\n";
     BT::printTree(sqlBtr, BT::print::IN);
+    std::cout << "==================\n";
     BT::printTree(sqlBtr, BT::print::POST);
+    std::cout << "==================\n";
     BT::printTree(sqlBtr, BT::print::LEVEL);
+    std::cout << "==================\n";
     std::cout << "findNearParent:" << sqlBtr.findNearParent(1, 4) << '\n';
 }

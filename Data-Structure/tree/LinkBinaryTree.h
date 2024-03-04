@@ -68,7 +68,6 @@ namespace BT
         void preOrder(const BinTreeNode<Elem> *rt) const;    // 先序遍历
         void inOrder(const BinTreeNode<Elem> *rt) const;     // 中序遍历
         void postOrder(const BinTreeNode<Elem> *rt) const;   // 后序遍历
-        void levelOrder() const;                             // 层序遍历
         void doubleOrder(const BinTreeNode<Elem> *rt) const; // 递归双序遍历
         Uint leafNum(const BinTreeNode<Elem> *rt) const;     // 求树的叶子结点个数
     public:
@@ -76,13 +75,17 @@ namespace BT
         LinkBinaryTree(LinkBinaryTree<Elem> &&src);
         LinkBinaryTree(const LinkBinaryTree<Elem> &src) = delete;
         ~LinkBinaryTree();
-        void preOrder() const;    // 非递归前序遍历
-        void inOrder() const;     // 非递归中序遍历
-        void postOrder() const;   // 非递归后序遍历
-        void doubleOrder() const; // 非递归双序遍历
-        Uint depth() const;       // 求树的深度,递归
-        Uint maxWidth() const;    // 求树的最大宽度,非递归
-        Uint leafNum() const;     // 求树的叶子结点个数,非递归
+        void preOrder() const;   // 非递归前序遍历
+        void inOrder() const;    // 非递归中序遍历
+        void postOrder() const;  // 非递归后序遍历
+        void levelOrder() const; // 层序遍历
+        /**
+         * @todo: 非递归双序
+         */
+        // void doubleOrder() const; // 非递归双序遍历
+        Uint depth() const;    // 求树的深度,递归
+        Uint maxWidth() const; // 求树的最大宽度,非递归
+        Uint leafNum() const;  // 求树的叶子结点个数,非递归
     };
 
     template <class Elem>
@@ -191,6 +194,7 @@ namespace BT
             que.pop_front();
             // 需要注意pop没有返回值
         }
+        std::cout << '\n';
     }
 
     template <class Elem>
@@ -361,51 +365,6 @@ namespace BT
                 {
                     stk.push_back(stk.back()->rightChild);
                     flag.push_back(0);
-                }
-            }
-        }
-        std::cout << '\n';
-    }
-
-    template <class Elem>
-    void LinkBinaryTree<Elem>::doubleOrder() const
-    {
-        std::deque<BinTreeNode<Elem> *> stk;
-        std::deque<Uint> flag;
-        BinTreeNode<Elem> *tmp = nullptr;
-        if (root != nullptr)
-        {
-            stk.push_back(root);
-            flag.push_back(0);
-        }
-        while (!stk.empty())
-        {
-            if (stk.back()->leftChild != nullptr && flag.back() == 0)
-            {
-                stk.push_back(stk.back()->leftChild);
-                flag.push_back(0);
-            }
-            else
-            {
-                if (flag.back() == 0)
-                {
-                    std::cout << stk.back()->data << ' ';
-                    flag.back()++;
-                }
-                if (stk.back()->rightChild != nullptr && flag.back() == 1)
-                {
-                    stk.push_back(stk.back()->rightChild);
-                    flag.push_back(0);
-                }
-                else
-                {
-                    tmp = stk.back();
-                    stk.pop_back();
-                    flag.pop_back();
-                    if (tmp->rightChild != nullptr)
-                    {
-                        std::cout << tmp->rightChild->data << ' ';
-                    }
                 }
             }
         }

@@ -8,11 +8,11 @@ int main()
     using std::string;
 
     string str = "Hello World!";
+    cout << "Before :" << str << '\n';
     MoveSubstrTail(str, 5, 5);
-    cout << "str:" << str << '\n';
+    cout << "After :" << str << '\n';
 
     char *arr = new char[]{" Hello World!"};
-    memcpy(arr, " Hello World!", strlen(" Hello World!"));
     MoveSubstrTailArr(arr, 6, 5);
-    cout << "arr:" << arr << '\n';
+    cout << "arr(type char*) :" << arr << '\n';
 }
