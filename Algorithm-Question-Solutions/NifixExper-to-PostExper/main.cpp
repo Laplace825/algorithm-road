@@ -3,7 +3,6 @@
 int main()
 {
     // 生成测试
-    system("chcp 65001 && cls");
     using std::cout;
     using std::string;
     string infix = "(1+2)*3-10/5";
