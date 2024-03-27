@@ -19,6 +19,7 @@ namespace ds
     template <typename Elem>
     class AdjListNet
     {
+    protected:
         struct vexLinkNode
         {
             int64_t m_adjVex{-1};
@@ -58,7 +59,7 @@ namespace ds
             }
         }
 
-        void add_arc(int64_t index_dot1, int64_t index_dot2, int64_t weight)
+        virtual void add_arc(int64_t index_dot1, int64_t index_dot2, int64_t weight)
         {
             /***
              * @note: 添加一条从 dot1 到 dot2 的弧(出), 将大的index放后面
@@ -91,7 +92,7 @@ namespace ds
             ArcNum++;
         }
 
-        void remove_arc(int64_t index_dot1, int64_t index_dot2)
+        virtual void remove_arc(int64_t index_dot1, int64_t index_dot2)
         {
             /**
              * @note: 删除一条从 dot1 到 dot2 的弧(出)
@@ -134,7 +135,7 @@ namespace ds
             visited.assign(visited.size(), false);
         }
 
-    private:
+    protected:
         void dfs(
             int64_t index_dot, const std::function<void(Elem &elem)> &funcTrans = [](Elem &elem) {})
         {
@@ -236,12 +237,50 @@ namespace ds
         }
     };
 
-    AdjListNet<int> get_graph_dire()
+    template <typename Elem>
+    class AdjListDirNet : public AdjListNet<Elem>
+    {
+        // 有向图的邻接表
+    public:
+        AdjListDirNet(const Elem *es, size_t vertexnum) : AdjListNet<Elem>(es, vertexnum) {}
+
+        void add_arc(int64_t index_dot1, int64_t index_dot2, int64_t weight) override
+        {
+            AdjListNet<Elem>::add_arc(index_dot1, index_dot2, weight);
+        }
+
+        void remove_arc(int64_t index_dot1, int64_t index_dot2) override
+        {
+            AdjListNet<Elem>::remove_arc(index_dot2, index_dot1);
+        }
+    };
+
+    template <typename Elem>
+    class AdjListUndirNet : public AdjListNet<Elem>
+    {
+        // 无向图的邻接表
+    public:
+        AdjListUndirNet(const Elem *es, size_t vertexnum) : AdjListNet<Elem>(es, vertexnum) {}
+
+        void add_arc(int64_t index_dot1, int64_t index_dot2, int64_t weight) override
+        {
+            AdjListNet<Elem>::add_arc(index_dot1, index_dot2, weight);
+            AdjListNet<Elem>::add_arc(index_dot2, index_dot1, weight);
+        }
+
+        void remove_arc(int64_t index_dot1, int64_t index_dot2) override
+        {
+            AdjListNet<Elem>::remove_arc(index_dot1, index_dot2);
+            AdjListNet<Elem>::remove_arc(index_dot2, index_dot1);
+        }
+    };
+
+    AdjListDirNet<int> get_graph_dire()
     {
         int *es = new int[]{0, 1, 2, 3, 4, 5, 6};
-        AdjListNet<int> graph_dire(es, 7);
-        graph_dire.add_arc(0, 1, 8);
+        AdjListDirNet<int> graph_dire(es, 7);
         graph_dire.add_arc(0, 4, 5);
+        graph_dire.add_arc(0, 1, 8);
         graph_dire.add_arc(0, 3, 4);
         graph_dire.add_arc(4, 1, 2);
         graph_dire.add_arc(1, 2, 3);
@@ -255,9 +294,34 @@ namespace ds
         return graph_dire;
     }
 
-    AdjListNet<int> get_graph_undire()
+    AdjListUndirNet<char> get_graph_undire()
     {
-        }
+        char *es = new char[]{'A', 'B', 'C', 'D', 'E', 'F'};
+        AdjListUndirNet<char> graph_undire(es, 6);
+        graph_undire.add_arc(0, 1, 12);
+
+        graph_undire.add_arc(0, 2, 3);
+
+        graph_undire.add_arc(0, 4, 9);
+
+        graph_undire.add_arc(0, 5, 10);
+
+        graph_undire.add_arc(1, 5, 6);
+
+        graph_undire.add_arc(1, 3, 2);
+
+        graph_undire.add_arc(2, 5, 6);
+
+        graph_undire.add_arc(2, 3, 2);
+
+        graph_undire.add_arc(3, 5, 7);
+
+        graph_undire.add_arc(4, 5, 4);
+
+        graph_undire.add_arc(3, 4, 4);
+        delete[] es;
+        return graph_undire;
+    }
 
     template <class Graph>
     void Trans(Graph &graph, int64_t index_dot, TransType type)
