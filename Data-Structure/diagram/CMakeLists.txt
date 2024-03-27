@@ -1,0 +1,1 @@
+add_executable(diagram diagram.cpp)
