@@ -515,7 +515,7 @@ namespace ds {
             return maxPath;
         }
 
-        int64_t exit_path_number(int64_t index_dot1, int64_t index_dot2, int64_t k) const {
+        int64_t exit_path_length(int64_t index_dot1, int64_t index_dot2, int64_t k) const {
             /**
              * @param:
              * k: 路径长度
