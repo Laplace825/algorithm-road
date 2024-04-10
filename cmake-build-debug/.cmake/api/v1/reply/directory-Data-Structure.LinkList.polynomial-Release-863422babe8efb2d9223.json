@@ -1,0 +1,14 @@
+{
+	"backtraceGraph" : 
+	{
+		"commands" : [],
+		"files" : [],
+		"nodes" : []
+	},
+	"installers" : [],
+	"paths" : 
+	{
+		"build" : "Data-Structure/LinkList/polynomial",
+		"source" : "Data-Structure/LinkList/polynomial"
+	}
+}
