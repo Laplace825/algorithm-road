@@ -1,0 +1,14 @@
+{
+	"backtraceGraph" : 
+	{
+		"commands" : [],
+		"files" : [],
+		"nodes" : []
+	},
+	"installers" : [],
+	"paths" : 
+	{
+		"build" : "Algorithm-Question-Solutions/erase-element-array",
+		"source" : "Algorithm-Question-Solutions/erase-element-array"
+	}
+}

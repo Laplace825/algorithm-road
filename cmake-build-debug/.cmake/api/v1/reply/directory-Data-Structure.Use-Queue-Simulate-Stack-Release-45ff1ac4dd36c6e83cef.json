@@ -1,0 +1,14 @@
+{
+	"backtraceGraph" : 
+	{
+		"commands" : [],
+		"files" : [],
+		"nodes" : []
+	},
+	"installers" : [],
+	"paths" : 
+	{
+		"build" : "Data-Structure/Use-Queue-Simulate-Stack",
+		"source" : "Data-Structure/Use-Queue-Simulate-Stack"
+	}
+}
