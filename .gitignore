@@ -7,3 +7,4 @@
 .vscode/*
 build/
 run/
+cmake-build-debug/
