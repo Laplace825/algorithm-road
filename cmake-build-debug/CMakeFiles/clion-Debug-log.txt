@@ -1,4 +1,0 @@
-/usr/bin/cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_MAKE_PROGRAM=/snap/clion/274/bin/ninja/linux/x64/ninja -G Ninja -S /home/lap/app/algo/algorithm-road -B /home/lap/app/algo/algorithm-road/cmake-build-debug
--- Configuring done (0.0s)
--- Generating done (0.0s)
--- Build files have been written to: /home/lap/app/algo/algorithm-road/cmake-build-debug
