@@ -4,9 +4,11 @@
 *.png
 *.exe
 *.sh
-.vscode/*
+bin/
+.vscode/
 build/
 run/
 cmake-build-debug/
 cmake-build-release/
 .idea/
+.history/

@@ -1,1 +1,2 @@
-add_executable(diagram diagram.cpp)
+add_executable(diagram diagram.cpp
+        diagram.hpp)
