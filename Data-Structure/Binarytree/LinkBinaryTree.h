@@ -484,6 +484,10 @@ unsigned int leafNum(const LinkBinaryTree<Elem> &Bintree) {
 
 template <typename Elem>
 bool is_BST(const LinkBinaryTree<Elem> &bTree, bool ascending = true) noexcept {
+  /**
+   * NOTE: 中序遍历
+   */
+
   BinTreeNode<Elem> *rt = bTree.getRoot();
   std::stack<BinTreeNode<Elem> *> stk;
   auto tmp = rt;

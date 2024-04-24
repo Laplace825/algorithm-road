@@ -20,7 +20,7 @@ template <typename Elem> class BST : public LinkBinaryTree<Elem> {
 public:
   BinTreeNode<Elem> *find(const Elem &e, BinTreeNode<Elem> *&res) const;
   bool insert(const Elem &v) noexcept;
-  void allKey(const Elem &x, bool ascending = true) const;
+  void allKey(const Elem &x) const;
 };
 
 template <typename Elem>
@@ -58,8 +58,11 @@ template <typename Elem> bool BST<Elem>::insert(const Elem &v) noexcept {
   }
 }
 
-template <typename Elem>
-void BST<Elem>::allKey(const Elem &x, bool ascending) const {
+template <typename Elem> void BST<Elem>::allKey(const Elem &x) const {
+  /**
+   * NOTE: 当前节点值小往右递归,大则左右都递归
+   * Param: x 是待比较的值
+   */
   std::stack<Elem> stk;
   auto help = [this, &x, &stk](auto &&func, BinTreeNode<Elem> *rt) -> void {
     if (!rt)
