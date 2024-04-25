@@ -3,11 +3,10 @@
 *.pdf
 *.png
 *.exe
-*.sh
+
 bin/
 .vscode/
 build/
-run/
 cmake-build-debug/
 cmake-build-release/
 .idea/

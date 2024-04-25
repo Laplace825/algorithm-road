@@ -1,2 +1,2 @@
 include_directories(../Binarytree/)
-add_executable(BST main.cpp)
+add_executable(BSTTree main.cpp)

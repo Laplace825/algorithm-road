@@ -9,5 +9,5 @@ set(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/bin)
 
 # Debug
 set(CMAKE_BUILD_TYPE "Debug")
-add_subdirectory(Algorithm-Question-Solutions)
-add_subdirectory(Data-Structure)
+add_subdirectory(Algo)
+add_subdirectory(DS)
