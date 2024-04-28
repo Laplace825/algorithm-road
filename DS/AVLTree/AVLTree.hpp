@@ -263,6 +263,34 @@ class AVLTree {
         };
         return findtheKMinElemHelp(findtheKMinElemHelp, root, k);
     }
+
+    size_t height() const noexcept {
+        size_t heightAvlTree{0};
+        // while (curNode) {
+        //     if (curNode->BF > 0) {
+        //         curNode = curNode->rightChild;
+        //         heightAvlTree++;
+        //     } else if (curNode->BF <= 0) {
+        //         curNode = curNode->leftChild;
+        //         heightAvlTree++;
+        //     }
+        // }
+
+        // 尾递归
+        auto heightHelp = [&heightAvlTree](auto &&func, AVLNode *node) {
+            if (!node)
+                return heightAvlTree;
+            else {
+                heightAvlTree++;
+                // @note: 树左边高则BF<0
+                return node->BF >= 0 ? func(func, node->rightChild)
+                                     : func(func, node->leftChild);
+            }
+        };
+
+        return heightHelp(heightHelp, root);
+    }
 };
+
 }  // namespace BT
 #endif  // __AVL_TREE_HPP__

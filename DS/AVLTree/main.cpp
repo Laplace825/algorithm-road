@@ -2,8 +2,8 @@
  * @Author: laplace825
  * @Date: 2024-04-23 15:34:04
  * @LastEditors: laplace825
- * @LastEditTime: 2024-04-25 21:11:27
- * @FilePath: /algorithm-road/Data-Structure/AVLTree/main.cpp
+ * @LastEditTime: 2024-04-28 15:05:14
+ * @FilePath: /algorithm-road/DS/AVLTree/main.cpp
  * @Description:
  *
  * Copyright (c) 2024 by laplace825, All Rights Reserved.
@@ -27,4 +27,5 @@ signed main() {
     std::cout << "find the \033[1;33m7th\033[0m smallest :"
               << *AvlTr.findTheKMinElem(7) << '\n';
     std::cout << "--------------------------------\n";
+    std::cout << std::format("use BF to calculate height:{}\n", AvlTr.height());
 }
