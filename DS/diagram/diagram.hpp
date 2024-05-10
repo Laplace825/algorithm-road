@@ -194,6 +194,7 @@ class AdjListNet {
         }) noexcept {
         bfs(index_dot, funcTrans);
         reset_visit();
+
         std::cout << '\n';
     }
 

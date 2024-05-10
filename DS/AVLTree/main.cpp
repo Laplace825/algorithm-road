@@ -14,6 +14,7 @@
 #include "AVLTree.hpp"
 
 signed main() {
+<<<<<<< HEAD
   BT::AVLTree<int> AvlTr;
   constexpr int arr[] = {50, 30, 53, 52, 55, 26, 33, 10, 27, 28};
   for (size_t i = 0; i < sizeof(arr) / 4; i++) {
@@ -28,4 +29,20 @@ signed main() {
             << *AvlTr.findTheKMinElem(7) << '\n';
   std::cout << "--------------------------------\n";
   std::cout << std::format("use BF to calculate height:{}\n", AvlTr.height());
+=======
+    BT::AVLTree<int> AvlTr;
+    constexpr int arr[] = {50, 30, 53, 52, 55, 26, 33, 10, 27, 28};
+    for (size_t i = 0; i < sizeof(arr) / 4; i++) {
+        AvlTr.insert(arr[i]);
+    }
+    std::cout << "*-----------\033[1;33mAvlTree\033[0m------------*\n";
+    AvlTr.print();
+    std::cout << "--------------------------------\n";
+    std::cout << "find the \033[1;33m2nd\033[0m smallest :"
+              << *AvlTr.findTheKMinElem(2) << '\n';
+    std::cout << "find the \033[1;33m8th\033[0m smallest :"
+              << *AvlTr.findTheKMinElem(8) << '\n';
+    std::cout << "--------------------------------\n";
+    std::cout << std::format("use BF to calculate height:{}\n", AvlTr.height());
+>>>>>>> 77d7b7b (Hash Sequence)
 }

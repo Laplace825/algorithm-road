@@ -293,16 +293,19 @@ public:
                     /**
                      * @note: 每次将iter-subRoot->lsize检查当前被跳过的元素个数
                      */
-                    iter = iter - static_cast<int64_t>(subRoot->lsize) > 0
-                               ? iter - subRoot->lsize
-                               : iter;
                     return func(func, subRoot->leftChild, iter);
+<<<<<<< HEAD
                 }
                 else if (subRoot->lsize < iter)
                 {
                     iter = iter - static_cast<int64_t>(subRoot->lsize) > 0
                                ? iter - subRoot->lsize
                                : iter;
+=======
+
+                } else if (subRoot->lsize < iter) {
+                    iter = iter - static_cast<int64_t>(subRoot->lsize);
+>>>>>>> 77d7b7b (Hash Sequence)
                     return func(func, subRoot->rightChild, iter);
                 }
             }
