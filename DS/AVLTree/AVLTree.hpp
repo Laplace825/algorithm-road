@@ -302,8 +302,9 @@ public:
                                ? iter - subRoot->lsize
                                : iter;
 =======
-
-                } else if (subRoot->lsize < iter) {
+                }
+                else if (subRoot->lsize < iter)
+                {
                     iter = iter - static_cast<int64_t>(subRoot->lsize);
 >>>>>>> 77d7b7b (Hash Sequence)
                     return func(func, subRoot->rightChild, iter);
